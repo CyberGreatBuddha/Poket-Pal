@@ -1,0 +1,458 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:7734208788023056508",
+      "lastPropertyId": "7:1343719411388336974",
+      "name": "Activity",
+      "properties": [
+        {
+          "id": "1:1525099769235044556",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6624351320925073687",
+          "name": "palId",
+          "indexId": "1:7449762444375996414",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "Pal"
+        },
+        {
+          "id": "3:4522769392280205418",
+          "name": "biomeId",
+          "indexId": "2:4858676440940217573",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "Biome"
+        },
+        {
+          "id": "4:3620761214242845990",
+          "name": "activityType",
+          "type": 9
+        },
+        {
+          "id": "5:6609822434187438406",
+          "name": "requiredTaskCount",
+          "type": 6
+        },
+        {
+          "id": "6:5674312575791569581",
+          "name": "startedAt",
+          "type": 10
+        },
+        {
+          "id": "7:1343719411388336974",
+          "name": "completedAt",
+          "type": 10
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:8307711397431201546",
+      "lastPropertyId": "5:9142547070335590303",
+      "name": "Biome",
+      "properties": [
+        {
+          "id": "1:2265002581159970669",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1710860998258899210",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:7325763580233579735",
+          "name": "difficultyTier",
+          "type": 6
+        },
+        {
+          "id": "4:1039622362481131133",
+          "name": "themeAssetPath",
+          "type": 9
+        },
+        {
+          "id": "5:9142547070335590303",
+          "name": "unlockMinPalLevel",
+          "type": 6
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:4291946369222925878",
+      "lastPropertyId": "5:7827452296643946539",
+      "name": "CharacterComponentOption",
+      "properties": [
+        {
+          "id": "1:9023457009095329285",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:9056434488793502133",
+          "name": "componentSlot",
+          "type": 9
+        },
+        {
+          "id": "3:8744355749486827226",
+          "name": "assetPath",
+          "type": 9
+        },
+        {
+          "id": "4:5460950411714507154",
+          "name": "displayLabel",
+          "type": 9
+        },
+        {
+          "id": "5:7827452296643946539",
+          "name": "guidedModeEligible",
+          "type": 1
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:6019702157470948388",
+      "lastPropertyId": "4:3876015296276290039",
+      "name": "ChildProfile",
+      "properties": [
+        {
+          "id": "1:5794706775170536016",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1694040832008560113",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:7025556374606001087",
+          "name": "ageYears",
+          "type": 6
+        },
+        {
+          "id": "4:3876015296276290039",
+          "name": "createdAt",
+          "type": 10
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "5:1264027403658526936",
+      "lastPropertyId": "1:4030664870033804912",
+      "name": "DifficultyModel",
+      "properties": [
+        {
+          "id": "1:4030664870033804912",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "6:4179212821778405790",
+      "lastPropertyId": "15:3549472387839902912",
+      "name": "Pal",
+      "properties": [
+        {
+          "id": "1:5542254175442528106",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5747020338560513217",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "3:7646371396628007737",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "4:3159361516157622928",
+          "name": "lastInteractionAt",
+          "type": 10
+        },
+        {
+          "id": "5:754122743981738817",
+          "name": "hunger",
+          "type": 8
+        },
+        {
+          "id": "6:3972092090067592359",
+          "name": "mood",
+          "type": 8
+        },
+        {
+          "id": "7:3692903958384448433",
+          "name": "energy",
+          "type": 8
+        },
+        {
+          "id": "8:1787360260878830157",
+          "name": "isActive",
+          "type": 1
+        },
+        {
+          "id": "9:6561986787892472886",
+          "name": "archivedAt",
+          "type": 10
+        },
+        {
+          "id": "10:1173341804761915090",
+          "name": "isFrozen",
+          "type": 1
+        },
+        {
+          "id": "11:4732427964739077654",
+          "name": "frozenSince",
+          "type": 10
+        },
+        {
+          "id": "12:5344588331569435667",
+          "name": "spriteAssetId",
+          "indexId": "3:3832135242332755946",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "SpriteAsset"
+        },
+        {
+          "id": "13:3657858489545352813",
+          "name": "difficultyModelId",
+          "indexId": "4:875184269714988999",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "DifficultyModel"
+        },
+        {
+          "id": "14:1733356565500335286",
+          "name": "locationState",
+          "type": 9
+        },
+        {
+          "id": "15:3549472387839902912",
+          "name": "currentBiomeId",
+          "indexId": "5:447459880048974375",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "Biome"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "7:8080747406461047558",
+      "lastPropertyId": "5:292343247578410394",
+      "name": "SkillLevel",
+      "properties": [
+        {
+          "id": "1:8146400066441507087",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2739460896140354084",
+          "name": "difficultyModelId",
+          "indexId": "6:2993160447763185430",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "DifficultyModel"
+        },
+        {
+          "id": "3:6666093571104881414",
+          "name": "categoryKey",
+          "type": 9
+        },
+        {
+          "id": "4:6095339648498474076",
+          "name": "level",
+          "type": 6
+        },
+        {
+          "id": "5:292343247578410394",
+          "name": "lastLevelUpAt",
+          "type": 10
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "8:2752074059510668181",
+      "lastPropertyId": "10:6558184812077331101",
+      "name": "SpriteAsset",
+      "properties": [
+        {
+          "id": "1:7488399701122595951",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8561440020856066248",
+          "name": "spriteFilePath",
+          "type": 9
+        },
+        {
+          "id": "3:7558131177587313614",
+          "name": "paletteId",
+          "type": 9
+        },
+        {
+          "id": "4:4038475631684277271",
+          "name": "spriteWidth",
+          "type": 6
+        },
+        {
+          "id": "5:4685101073906992897",
+          "name": "spriteHeight",
+          "type": 6
+        },
+        {
+          "id": "6:1279103098554040411",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "7:6860768634675849102",
+          "name": "segmentationModel",
+          "type": 9
+        },
+        {
+          "id": "8:5345154597662272323",
+          "name": "segmentationConfidence",
+          "type": 8
+        },
+        {
+          "id": "9:7932157209445529918",
+          "name": "sourceType",
+          "type": 9
+        },
+        {
+          "id": "10:6558184812077331101",
+          "name": "designMode",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "9:558528727196972903",
+      "lastPropertyId": "3:4396008692385035904",
+      "name": "SpriteComponentSelection",
+      "properties": [
+        {
+          "id": "1:6685239594953568963",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5189224135206880562",
+          "name": "spriteAssetId",
+          "indexId": "7:8351347029752771951",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "SpriteAsset"
+        },
+        {
+          "id": "3:4396008692385035904",
+          "name": "componentOptionId",
+          "indexId": "8:5601664328128034121",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "CharacterComponentOption"
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "10:1843339178997570490",
+      "lastPropertyId": "9:6817240668352815678",
+      "name": "TaskRecord",
+      "properties": [
+        {
+          "id": "1:1749523667806916204",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:1206231850061561317",
+          "name": "palId",
+          "indexId": "9:5456433217014248580",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "Pal"
+        },
+        {
+          "id": "3:2474459044241857603",
+          "name": "activityId",
+          "indexId": "10:7593485018642480854",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "Activity"
+        },
+        {
+          "id": "4:5212468044803427184",
+          "name": "categoryKey",
+          "type": 9
+        },
+        {
+          "id": "5:1860431421669985993",
+          "name": "difficultyAtTime",
+          "type": 6
+        },
+        {
+          "id": "6:4757688160590417940",
+          "name": "wasCorrect",
+          "type": 1
+        },
+        {
+          "id": "7:8252406686792392069",
+          "name": "responseTimeMs",
+          "type": 6
+        },
+        {
+          "id": "8:266348637081871740",
+          "name": "completedAt",
+          "type": 10
+        },
+        {
+          "id": "9:6817240668352815678",
+          "name": "presentationMode",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "10:1843339178997570490",
+  "lastIndexId": "10:7593485018642480854",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
