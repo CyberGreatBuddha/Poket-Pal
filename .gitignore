@@ -46,3 +46,12 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Native ObjectBox library for running `flutter test` on Windows without a
+# full Windows-desktop build (Visual Studio). Not part of the app itself --
+# real builds fetch this via objectbox_flutter_libs' CMake step.
+/lib/objectbox.dll
+
+# Local dev-server launch config (Claude Code Browser pane) -- contains a
+# machine-specific absolute path to the local Flutter SDK.
+/.claude/

@@ -1,30 +1,75 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:poketpal/domain/tiredness/tiredness_balancing.dart';
+import 'package:poketpal/persistence/fakes/in_memory_pal_repository.dart';
+import 'package:poketpal/persistence/fakes/in_memory_parent_settings_repository.dart';
+import 'package:poketpal/persistence/fakes/in_memory_screen_time_repository.dart';
+import 'package:poketpal/persistence/fakes/in_memory_skill_level_repository.dart';
+import 'package:poketpal/persistence/fakes/in_memory_task_history_repository.dart';
+import 'package:poketpal/presentation/app.dart';
 
-import 'package:poketpal/main.dart';
-
+// End-to-End-Verdrahtungstest: Controller + In-Memory-Fakes + Screens
+// zusammen. Bewusst ohne Annahmen ueber konkrete Zufallswerte (Aufgaben
+// werden zufaellig generiert) -- prueft nur, dass die Kette
+// Repository -> Controller -> UI tatsaechlich funktioniert.
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  Widget buildApp() {
+    return PoketPalApp(
+      palRepository: InMemoryPalRepository(),
+      taskHistoryRepository: InMemoryTaskHistoryRepository(),
+      skillLevelRepository: InMemorySkillLevelRepository(),
+      parentSettingsRepository: InMemoryParentSettingsRepository(),
+      screenTimeRepository: InMemoryScreenTimeRepository(),
+    );
+  }
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  testWidgets('shows full hunger/mood and fresh tiredness-energy on first launch', (tester) async {
+    await tester.pumpWidget(buildApp());
+    await tester.pumpAndSettle();
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    // Hunger + Laune bei 100%, Energie zeigt den frischen Muedigkeits-Wert
+    // (TirednessBalancing.startEnergyRatio), nicht PalStats.energy.
+    expect(find.text('100%'), findsNWidgets(2));
+    final freshEnergyPercent = (TirednessBalancing.startEnergyRatio * 100).round();
+    expect(find.text('$freshEnergyPercent%'), findsOneWidget);
+  });
+
+  testWidgets('Spielen-Button oeffnet die Kategorie-Auswahl und laedt eine Aufgabe', (tester) async {
+    await tester.pumpWidget(buildApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Spielen'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('math.pictogram').first);
+    await tester.pumpAndSettle();
+
+    final optionButtons = find.byType(ElevatedButton);
+    expect(optionButtons, findsWidgets);
+
+    await tester.tap(optionButtons.first);
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    final foundCorrect = find.textContaining('Richtig').evaluate().isNotEmpty;
+    final foundWrong = find.textContaining('Leider falsch').evaluate().isNotEmpty;
+    expect(foundCorrect || foundWrong, isTrue);
+
+    // TaskScreen zeigt das Feedback 1s an und laedt danach die naechste
+    // Aufgabe -- den Timer hier auslaufen lassen, sonst bleibt er beim
+    // Testende haengen.
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+  });
+
+  testWidgets('Elternmenue zeigt die Bildschirmzeit-Einstellungen', (tester) async {
+    await tester.pumpWidget(buildApp());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byIcon(Icons.settings));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Bildschirmzeit'), findsOneWidget);
+    expect(find.text('Müdigkeits-Limit aktiv'), findsOneWidget);
+    expect(find.byType(Slider), findsOneWidget);
+    expect(find.text('Minuten bis Pal müde wird: 25'), findsOneWidget);
   });
 }

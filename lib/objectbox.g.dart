@@ -20,6 +20,9 @@ import 'persistence/entities/character_component_option.dart';
 import 'persistence/entities/child_profile.dart';
 import 'persistence/entities/difficulty_model.dart';
 import 'persistence/entities/pal.dart';
+import 'persistence/entities/pal_attribute.dart';
+import 'persistence/entities/parent_settings_entry.dart';
+import 'persistence/entities/screen_time_entry.dart';
 import 'persistence/entities/skill_level.dart';
 import 'persistence/entities/sprite_asset.dart';
 import 'persistence/entities/sprite_component_selection.dart';
@@ -346,6 +349,11 @@ final _entities = <obx_int.ModelEntity>[
         srcEntity: 'Activity',
         srcField: 'pal',
       ),
+      obx_int.ModelBacklink(
+        name: 'attributes',
+        srcEntity: 'PalAttribute',
+        srcField: 'pal',
+      ),
     ],
   ),
   obx_int.ModelEntity(
@@ -565,6 +573,99 @@ final _entities = <obx_int.ModelEntity>[
     relations: <obx_int.ModelRelation>[],
     backlinks: <obx_int.ModelBacklink>[],
   ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(11, 4963445883784610866),
+    name: 'PalAttribute',
+    lastPropertyId: const obx_int.IdUid(4, 3209172299817971789),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 257816987845777243),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 8064878840275715894),
+        name: 'palId',
+        type: 11,
+        flags: 520,
+        indexId: const obx_int.IdUid(11, 1767262495331150781),
+        relationField: 'pal',
+        relationTarget: 'Pal',
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 7358309991486661779),
+        name: 'key',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 3209172299817971789),
+        name: 'value',
+        type: 9,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(12, 1237693884234384724),
+    name: 'ParentSettingsEntry',
+    lastPropertyId: const obx_int.IdUid(3, 6148848013871311134),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 6406379324062481190),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 6619083375521315596),
+        name: 'tirednessThresholdMinutes',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 6148848013871311134),
+        name: 'isTirednessLimitEnabled',
+        type: 1,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
+  obx_int.ModelEntity(
+    id: const obx_int.IdUid(13, 1376588481007802239),
+    name: 'ScreenTimeEntry',
+    lastPropertyId: const obx_int.IdUid(3, 1119040233068233811),
+    flags: 0,
+    properties: <obx_int.ModelProperty>[
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 1056022356145588862),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(2, 7118419157120317027),
+        name: 'activeScreenTimeSeconds',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 1119040233068233811),
+        name: 'lastResetDate',
+        type: 10,
+        flags: 0,
+      ),
+    ],
+    relations: <obx_int.ModelRelation>[],
+    backlinks: <obx_int.ModelBacklink>[],
+  ),
 ];
 
 /// Shortcut for [obx.Store.new] that passes [getObjectBoxModel] and for Flutter
@@ -610,8 +711,8 @@ obx_int.ModelDefinition getObjectBoxModel() {
     // Typically, this is done with `dart run build_runner build`.
     generatorVersion: obx_int.GeneratorVersion.v2025_12_16,
     entities: _entities,
-    lastEntityId: const obx_int.IdUid(10, 1843339178997570490),
-    lastIndexId: const obx_int.IdUid(10, 7593485018642480854),
+    lastEntityId: const obx_int.IdUid(13, 1376588481007802239),
+    lastIndexId: const obx_int.IdUid(11, 1767262495331150781),
     lastRelationId: const obx_int.IdUid(0, 0),
     lastSequenceId: const obx_int.IdUid(0, 0),
     retiredEntityUids: const [],
@@ -893,6 +994,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id,
           (Activity srcObject) => srcObject.pal,
         ): object.activityHistory,
+        obx_int.RelInfo<PalAttribute>.toOneBacklink(
+          2,
+          object.id,
+          (PalAttribute srcObject) => srcObject.pal,
+        ): object.attributes,
       },
       getId: (Pal object) => object.id,
       setId: (Pal object, int id) {
@@ -1015,6 +1121,15 @@ obx_int.ModelDefinition getObjectBoxModel() {
             2,
             object.id,
             (Activity srcObject) => srcObject.pal,
+          ),
+        );
+        obx_int.InternalToManyAccess.setRelInfo<Pal>(
+          object.attributes,
+          store,
+          obx_int.RelInfo<PalAttribute>.toOneBacklink(
+            2,
+            object.id,
+            (PalAttribute srcObject) => srcObject.pal,
           ),
         );
         return object;
@@ -1255,6 +1370,120 @@ obx_int.ModelDefinition getObjectBoxModel() {
         return object;
       },
     ),
+    PalAttribute: obx_int.EntityDefinition<PalAttribute>(
+      model: _entities[10],
+      toOneRelations: (PalAttribute object) => [object.pal],
+      toManyRelations: (PalAttribute object) => {},
+      getId: (PalAttribute object) => object.id,
+      setId: (PalAttribute object, int id) {
+        object.id = id;
+      },
+      objectToFB: (PalAttribute object, fb.Builder fbb) {
+        final keyOffset = fbb.writeString(object.key);
+        final valueOffset = fbb.writeString(object.value);
+        fbb.startTable(5);
+        fbb.addInt64(0, object.id);
+        fbb.addInt64(1, object.pal.targetId);
+        fbb.addOffset(2, keyOffset);
+        fbb.addOffset(3, valueOffset);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+
+        final object = PalAttribute()
+          ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+          ..key = const fb.StringReader(
+            asciiOptimization: true,
+          ).vTableGet(buffer, rootOffset, 8, '')
+          ..value = const fb.StringReader(
+            asciiOptimization: true,
+          ).vTableGet(buffer, rootOffset, 10, '');
+        object.pal.targetId = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          6,
+          0,
+        );
+        object.pal.attach(store);
+        return object;
+      },
+    ),
+    ParentSettingsEntry: obx_int.EntityDefinition<ParentSettingsEntry>(
+      model: _entities[11],
+      toOneRelations: (ParentSettingsEntry object) => [],
+      toManyRelations: (ParentSettingsEntry object) => {},
+      getId: (ParentSettingsEntry object) => object.id,
+      setId: (ParentSettingsEntry object, int id) {
+        object.id = id;
+      },
+      objectToFB: (ParentSettingsEntry object, fb.Builder fbb) {
+        fbb.startTable(4);
+        fbb.addInt64(0, object.id);
+        fbb.addInt64(1, object.tirednessThresholdMinutes);
+        fbb.addBool(2, object.isTirednessLimitEnabled);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+
+        final object = ParentSettingsEntry()
+          ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+          ..tirednessThresholdMinutes = const fb.Int64Reader().vTableGet(
+            buffer,
+            rootOffset,
+            6,
+            0,
+          )
+          ..isTirednessLimitEnabled = const fb.BoolReader().vTableGet(
+            buffer,
+            rootOffset,
+            8,
+            false,
+          );
+
+        return object;
+      },
+    ),
+    ScreenTimeEntry: obx_int.EntityDefinition<ScreenTimeEntry>(
+      model: _entities[12],
+      toOneRelations: (ScreenTimeEntry object) => [],
+      toManyRelations: (ScreenTimeEntry object) => {},
+      getId: (ScreenTimeEntry object) => object.id,
+      setId: (ScreenTimeEntry object, int id) {
+        object.id = id;
+      },
+      objectToFB: (ScreenTimeEntry object, fb.Builder fbb) {
+        fbb.startTable(4);
+        fbb.addInt64(0, object.id);
+        fbb.addInt64(1, object.activeScreenTimeSeconds);
+        fbb.addInt64(2, object.lastResetDate.millisecondsSinceEpoch);
+        fbb.finish(fbb.endTable());
+        return object.id;
+      },
+      objectFromFB: (obx.Store store, ByteData fbData) {
+        final buffer = fb.BufferContext(fbData);
+        final rootOffset = buffer.derefObject(0);
+
+        final object = ScreenTimeEntry()
+          ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+          ..activeScreenTimeSeconds = const fb.Int64Reader().vTableGet(
+            buffer,
+            rootOffset,
+            6,
+            0,
+          )
+          ..lastResetDate = DateTime.fromMillisecondsSinceEpoch(
+            const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0),
+          );
+
+        return object;
+      },
+    ),
   };
 
   return obx_int.ModelDefinition(model, bindings);
@@ -1476,6 +1705,11 @@ class Pal_ {
   static final activityHistory = obx.QueryBacklinkToMany<Activity, Pal>(
     Activity_.pal,
   );
+
+  /// see [Pal.attributes]
+  static final attributes = obx.QueryBacklinkToMany<PalAttribute, Pal>(
+    PalAttribute_.pal,
+  );
 }
 
 /// [SkillLevel] entity fields to define ObjectBox queries.
@@ -1626,5 +1860,65 @@ class TaskRecord_ {
   /// See [TaskRecord.presentationMode].
   static final presentationMode = obx.QueryStringProperty<TaskRecord>(
     _entities[9].properties[8],
+  );
+}
+
+/// [PalAttribute] entity fields to define ObjectBox queries.
+class PalAttribute_ {
+  /// See [PalAttribute.id].
+  static final id = obx.QueryIntegerProperty<PalAttribute>(
+    _entities[10].properties[0],
+  );
+
+  /// See [PalAttribute.pal].
+  static final pal = obx.QueryRelationToOne<PalAttribute, Pal>(
+    _entities[10].properties[1],
+  );
+
+  /// See [PalAttribute.key].
+  static final key = obx.QueryStringProperty<PalAttribute>(
+    _entities[10].properties[2],
+  );
+
+  /// See [PalAttribute.value].
+  static final value = obx.QueryStringProperty<PalAttribute>(
+    _entities[10].properties[3],
+  );
+}
+
+/// [ParentSettingsEntry] entity fields to define ObjectBox queries.
+class ParentSettingsEntry_ {
+  /// See [ParentSettingsEntry.id].
+  static final id = obx.QueryIntegerProperty<ParentSettingsEntry>(
+    _entities[11].properties[0],
+  );
+
+  /// See [ParentSettingsEntry.tirednessThresholdMinutes].
+  static final tirednessThresholdMinutes =
+      obx.QueryIntegerProperty<ParentSettingsEntry>(
+        _entities[11].properties[1],
+      );
+
+  /// See [ParentSettingsEntry.isTirednessLimitEnabled].
+  static final isTirednessLimitEnabled =
+      obx.QueryBooleanProperty<ParentSettingsEntry>(
+        _entities[11].properties[2],
+      );
+}
+
+/// [ScreenTimeEntry] entity fields to define ObjectBox queries.
+class ScreenTimeEntry_ {
+  /// See [ScreenTimeEntry.id].
+  static final id = obx.QueryIntegerProperty<ScreenTimeEntry>(
+    _entities[12].properties[0],
+  );
+
+  /// See [ScreenTimeEntry.activeScreenTimeSeconds].
+  static final activeScreenTimeSeconds =
+      obx.QueryIntegerProperty<ScreenTimeEntry>(_entities[12].properties[1]);
+
+  /// See [ScreenTimeEntry.lastResetDate].
+  static final lastResetDate = obx.QueryDateProperty<ScreenTimeEntry>(
+    _entities[12].properties[2],
   );
 }

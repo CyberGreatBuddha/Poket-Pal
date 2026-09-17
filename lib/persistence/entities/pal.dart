@@ -3,6 +3,7 @@ import 'package:objectbox/objectbox.dart';
 import 'activity.dart';
 import 'biome.dart';
 import 'difficulty_model.dart';
+import 'pal_attribute.dart';
 import 'sprite_asset.dart';
 import 'task_record.dart';
 
@@ -41,4 +42,8 @@ class Pal {
 
   @Backlink('pal')
   final activityHistory = ToMany<Activity>();
+
+  // Erweiterbarer Eigenschaften-Layer (noch offen, siehe PalAttribute).
+  @Backlink('pal')
+  final attributes = ToMany<PalAttribute>();
 }

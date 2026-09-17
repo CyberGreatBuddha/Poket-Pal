@@ -442,10 +442,90 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "11:4963445883784610866",
+      "lastPropertyId": "4:3209172299817971789",
+      "name": "PalAttribute",
+      "properties": [
+        {
+          "id": "1:257816987845777243",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:8064878840275715894",
+          "name": "palId",
+          "indexId": "11:1767262495331150781",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "Pal"
+        },
+        {
+          "id": "3:7358309991486661779",
+          "name": "key",
+          "type": 9
+        },
+        {
+          "id": "4:3209172299817971789",
+          "name": "value",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "12:1237693884234384724",
+      "lastPropertyId": "3:6148848013871311134",
+      "name": "ParentSettingsEntry",
+      "properties": [
+        {
+          "id": "1:6406379324062481190",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:6619083375521315596",
+          "name": "tirednessThresholdMinutes",
+          "type": 6
+        },
+        {
+          "id": "3:6148848013871311134",
+          "name": "isTirednessLimitEnabled",
+          "type": 1
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "13:1376588481007802239",
+      "lastPropertyId": "3:1119040233068233811",
+      "name": "ScreenTimeEntry",
+      "properties": [
+        {
+          "id": "1:1056022356145588862",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7118419157120317027",
+          "name": "activeScreenTimeSeconds",
+          "type": 6
+        },
+        {
+          "id": "3:1119040233068233811",
+          "name": "lastResetDate",
+          "type": 10
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "10:1843339178997570490",
-  "lastIndexId": "10:7593485018642480854",
+  "lastEntityId": "13:1376588481007802239",
+  "lastIndexId": "11:1767262495331150781",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
