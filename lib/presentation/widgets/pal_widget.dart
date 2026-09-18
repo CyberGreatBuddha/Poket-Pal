@@ -9,11 +9,12 @@ import '../theme/meadow_palette.dart';
 
 // Zeigt das eigene Pal-Sprite aus der Character Ingestion Pipeline
 // (Kernsystem 3), sobald eins existiert -- bis dahin ein Platzhalter-Kreis.
-// Nutzt die dort bereits vorhandenen prozeduralen Animations-Zeitfunktionen
-// (Idle-Wobble) fuer die Animation. isTired verlangsamt die Animation
-// ("langsamere Idle-Animation") und blendet ein "zzz"-Overlay ein
-// (Muedigkeits-Mechanik, Feature-Spec Abschnitt 2) -- unabhaengig von
-// PalStats/TimeDeltaEngine.
+// Wendet alle drei in ProceduralAnimation vorgesehenen Zeitfunktionen an
+// (Wackeln, Huepfen, Blinzeln-Overlay, siehe Konzept "Animation:"-Absatz zu
+// Kernsystem 3) -- erst das macht aus dem statischen Einzelfoto ein
+// "lebendiges" Pal. isTired verlangsamt die Animation ("langsamere
+// Idle-Animation") und blendet ein "zzz"-Overlay ein (Muedigkeits-Mechanik,
+// Feature-Spec Abschnitt 2) -- unabhaengig von PalStats/TimeDeltaEngine.
 class PalWidget extends StatefulWidget {
   final bool isTired;
   final Uint8List? spriteBytes;
@@ -54,37 +55,83 @@ class _PalWidgetState extends State<PalWidget> {
         ? Duration(microseconds: (_elapsed.inMicroseconds * 0.5).round())
         : _elapsed;
     final wobbleRadians = _animation.wobbleAngleDegrees(effectiveElapsed) * math.pi / 180;
+    final bounceOffset = _animation.bounceOffsetPixels(effectiveElapsed);
+    final isBlinking = _animation.isBlinking(effectiveElapsed);
 
     return GestureDetector(
       onTap: widget.onTap,
-      child: Transform.rotate(
-        angle: wobbleRadians,
-        child: Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.center,
-          children: [
-            if (widget.spriteBytes == null)
-              const _PlaceholderPal()
-            else
-              // BoxFit.contain skaliert das kleine Pixel-Raster (32x32, siehe
-              // SpritePaletteConfig) auf die Widget-Groesse hoch;
-              // FilterQuality.none haelt dabei die Pixel-Kanten scharf statt
-              // sie weichzuzeichnen.
-              Image.memory(
-                widget.spriteBytes!,
-                width: 140,
-                height: 140,
-                fit: BoxFit.contain,
-                filterQuality: FilterQuality.none,
-              ),
-            if (widget.isTired)
-              const Positioned(
-                top: -8,
-                right: -4,
-                child: Text('💤', style: TextStyle(fontSize: 28)),
-              ),
-          ],
+      // Huepfen (vertikaler Versatz) aussen, Wackeln (Rotation) innen --
+      // sonst wuerde die Rotation den Huepf-Versatz mitdrehen.
+      child: Transform.translate(
+        offset: Offset(0, -bounceOffset),
+        child: Transform.rotate(
+          angle: wobbleRadians,
+          child: Stack(
+            clipBehavior: Clip.none,
+            alignment: Alignment.center,
+            children: [
+              if (widget.spriteBytes == null)
+                const _PlaceholderPal()
+              else
+                // BoxFit.contain skaliert das kleine Pixel-Raster (32x32,
+                // siehe SpritePaletteConfig) auf die Widget-Groesse hoch;
+                // FilterQuality.none haelt dabei die Pixel-Kanten scharf
+                // statt sie weichzuzeichnen.
+                Image.memory(
+                  widget.spriteBytes!,
+                  width: 140,
+                  height: 140,
+                  fit: BoxFit.contain,
+                  filterQuality: FilterQuality.none,
+                ),
+              if (isBlinking) const _BlinkOverlay(),
+              if (widget.isTired)
+                const Positioned(
+                  top: -8,
+                  right: -4,
+                  child: Text('💤', style: TextStyle(fontSize: 28)),
+                ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+}
+
+// Simuliert geschlossene Augen, unabhaengig davon, wo im Foto/Platzhalter die
+// tatsaechlichen Augen liegen (keine Gesichtserkennung fuer Kinderzeichnungen)
+// -- zwei schmale Balken an der ueblichen Augenposition, kurz eingeblendet.
+class _BlinkOverlay extends StatelessWidget {
+  const _BlinkOverlay();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Positioned(
+      top: 46,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _BlinkMark(),
+          SizedBox(width: 22),
+          _BlinkMark(),
+        ],
+      ),
+    );
+  }
+}
+
+class _BlinkMark extends StatelessWidget {
+  const _BlinkMark();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 14,
+      height: 4,
+      decoration: BoxDecoration(
+        color: MeadowPalette.textOnLightPrimary,
+        borderRadius: BorderRadius.circular(2),
       ),
     );
   }
