@@ -5,8 +5,11 @@ import 'package:poketpal/persistence/fakes/in_memory_pal_repository.dart';
 import 'package:poketpal/persistence/fakes/in_memory_parent_settings_repository.dart';
 import 'package:poketpal/persistence/fakes/in_memory_screen_time_repository.dart';
 import 'package:poketpal/persistence/fakes/in_memory_skill_level_repository.dart';
+import 'package:poketpal/persistence/fakes/in_memory_sprite_asset_repository.dart';
 import 'package:poketpal/persistence/fakes/in_memory_task_history_repository.dart';
 import 'package:poketpal/presentation/app.dart';
+
+import 'support/fake_image_segmenter.dart';
 
 // End-to-End-Verdrahtungstest: Controller + In-Memory-Fakes + Screens
 // zusammen. Bewusst ohne Annahmen ueber konkrete Zufallswerte (Aufgaben
@@ -20,6 +23,8 @@ void main() {
       skillLevelRepository: InMemorySkillLevelRepository(),
       parentSettingsRepository: InMemoryParentSettingsRepository(),
       screenTimeRepository: InMemoryScreenTimeRepository(),
+      spriteAssetRepository: InMemorySpriteAssetRepository(),
+      imageSegmenter: FakeImageSegmenter(encodedTestForegroundImage),
     );
   }
 

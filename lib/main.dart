@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'ingestion/segmentation/ml_kit_subject_segmenter.dart';
 import 'persistence/config/object_box.dart';
 import 'presentation/app.dart';
 
@@ -18,6 +19,8 @@ void main() async {
       skillLevelRepository: objectBox.skillLevelRepository,
       parentSettingsRepository: objectBox.parentSettingsRepository,
       screenTimeRepository: objectBox.screenTimeRepository,
+      spriteAssetRepository: objectBox.spriteAssetRepository,
+      imageSegmenter: MlKitSubjectSegmenter(),
     ),
   );
 }

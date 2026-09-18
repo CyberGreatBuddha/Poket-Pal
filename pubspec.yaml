@@ -41,6 +41,7 @@ dependencies:
   google_mlkit_subject_segmentation: ^0.2.1
   image: ^4.10.1
   provider: ^6.1.5+1
+  image_picker: ^1.2.3
 
 dev_dependencies:
   flutter_test:

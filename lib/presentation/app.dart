@@ -6,6 +6,10 @@ import '../domain/settings/parent_settings_repository.dart';
 import '../domain/task_engine/skill_level_repository.dart';
 import '../domain/task_engine/task_history_repository.dart';
 import '../domain/tiredness/screen_time_repository.dart';
+import '../ingestion/character_ingestion_pipeline.dart';
+import '../ingestion/segmentation/image_segmenter.dart';
+import '../ingestion/sprite_asset_repository.dart';
+import 'controllers/ingestion_controller.dart';
 import 'controllers/pal_controller.dart';
 import 'controllers/screen_time_controller.dart';
 import 'controllers/task_controller.dart';
@@ -23,6 +27,8 @@ class PoketPalApp extends StatelessWidget {
   final SkillLevelRepository skillLevelRepository;
   final ParentSettingsRepository parentSettingsRepository;
   final ScreenTimeRepository screenTimeRepository;
+  final SpriteAssetRepository spriteAssetRepository;
+  final ImageSegmenter imageSegmenter;
 
   const PoketPalApp({
     super.key,
@@ -31,6 +37,8 @@ class PoketPalApp extends StatelessWidget {
     required this.skillLevelRepository,
     required this.parentSettingsRepository,
     required this.screenTimeRepository,
+    required this.spriteAssetRepository,
+    required this.imageSegmenter,
   });
 
   @override
@@ -51,6 +59,12 @@ class PoketPalApp extends StatelessWidget {
             screenTimeRepository: screenTimeRepository,
             parentSettingsRepository: parentSettingsRepository,
           )..start(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => IngestionController(
+            pipeline: CharacterIngestionPipeline(segmenter: imageSegmenter),
+            spriteAssetRepository: spriteAssetRepository,
+          ),
         ),
       ],
       child: MaterialApp(

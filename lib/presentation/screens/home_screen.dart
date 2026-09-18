@@ -10,6 +10,7 @@ import '../widgets/pal_widget.dart';
 import '../widgets/play_button.dart';
 import '../widgets/stat_bar.dart';
 import 'category_picker_screen.dart';
+import 'character_ingestion_screen.dart';
 import 'parent_menu_screen.dart';
 
 // Homescreen "Warme Wiese" (Zwischenloesung, Feature-Spec Abschnitt 1). Die
@@ -69,7 +70,16 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                         const Spacer(),
-                        Center(child: PalWidget(isTired: tiredness.isTired)),
+                        Center(
+                          child: PalWidget(
+                            isTired: tiredness.isTired,
+                            onTap: () => Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => CharacterIngestionScreen(palId: pal.id),
+                              ),
+                            ),
+                          ),
+                        ),
                         const Spacer(),
                         const Align(
                           alignment: Alignment.centerRight,

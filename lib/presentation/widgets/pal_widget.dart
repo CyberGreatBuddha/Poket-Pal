@@ -14,8 +14,9 @@ import '../theme/meadow_palette.dart';
 // Abschnitt 2) -- unabhaengig von PalStats/TimeDeltaEngine.
 class PalWidget extends StatefulWidget {
   final bool isTired;
+  final VoidCallback? onTap;
 
-  const PalWidget({super.key, this.isTired = false});
+  const PalWidget({super.key, this.isTired = false, this.onTap});
 
   @override
   State<PalWidget> createState() => _PalWidgetState();
@@ -51,24 +52,27 @@ class _PalWidgetState extends State<PalWidget> {
         : _elapsed;
     final wobbleRadians = _animation.wobbleAngleDegrees(effectiveElapsed) * math.pi / 180;
 
-    return Transform.rotate(
-      angle: wobbleRadians,
-      child: Stack(
-        clipBehavior: Clip.none,
-        alignment: Alignment.center,
-        children: [
-          Container(
-            width: 140,
-            height: 140,
-            decoration: const BoxDecoration(color: MeadowPalette.palBody, shape: BoxShape.circle),
-          ),
-          if (widget.isTired)
-            const Positioned(
-              top: -8,
-              right: -4,
-              child: Text('💤', style: TextStyle(fontSize: 28)),
+    return GestureDetector(
+      onTap: widget.onTap,
+      child: Transform.rotate(
+        angle: wobbleRadians,
+        child: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            Container(
+              width: 140,
+              height: 140,
+              decoration: const BoxDecoration(color: MeadowPalette.palBody, shape: BoxShape.circle),
             ),
-        ],
+            if (widget.isTired)
+              const Positioned(
+                top: -8,
+                right: -4,
+                child: Text('💤', style: TextStyle(fontSize: 28)),
+              ),
+          ],
+        ),
       ),
     );
   }
