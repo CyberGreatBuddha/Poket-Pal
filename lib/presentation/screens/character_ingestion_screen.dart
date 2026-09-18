@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/ingestion_controller.dart';
+import '../controllers/pal_controller.dart';
 
 // Character Ingestion Pipeline (Kernsystem 3): Foto aufnehmen/auswaehlen,
 // durch die Pipeline schicken, Ergebnis speichern. Bewusst ungestylt --
@@ -23,10 +24,16 @@ class _CharacterIngestionScreenState extends State<CharacterIngestionScreen> {
     final file = await _picker.pickImage(source: source);
     if (file == null || !mounted) return;
 
-    await context.read<IngestionController>().ingestFromPath(
-          palId: widget.palId,
-          imagePath: file.path,
-        );
+    final ingestionController = context.read<IngestionController>();
+    await ingestionController.ingestFromPath(
+      palId: widget.palId,
+      imagePath: file.path,
+    );
+    if (!mounted || ingestionController.lastDraft == null) return;
+
+    // Homescreen zeigt das neue Sprite sofort, ohne dass die App neu
+    // gestartet werden muss.
+    await context.read<PalController>().reloadSprite();
   }
 
   @override
@@ -58,6 +65,7 @@ class _CharacterIngestionScreenState extends State<CharacterIngestionScreen> {
                         controller.lastDraft!.spriteImageBytes,
                         width: 128,
                         height: 128,
+                        fit: BoxFit.contain,
                         filterQuality: FilterQuality.none,
                       ),
                       const SizedBox(height: 8),

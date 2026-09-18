@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:objectbox/objectbox.dart';
 import 'package:path/path.dart' as p;
@@ -47,6 +48,17 @@ class ObjectBoxSpriteAssetRepository implements SpriteAssetRepository {
     _palBox.put(pal);
 
     return id;
+  }
+
+  @override
+  Future<Uint8List?> getSpriteBytesForPal(int palId) async {
+    final pal = _palBox.get(palId);
+    final spriteAsset = pal?.spriteAsset.target;
+    if (spriteAsset == null) return null;
+
+    final file = File(spriteAsset.spriteFilePath);
+    if (!await file.exists()) return null;
+    return file.readAsBytes();
   }
 
   Future<String> _writeSpriteFile(int palId, SpriteAssetDraft draft) async {

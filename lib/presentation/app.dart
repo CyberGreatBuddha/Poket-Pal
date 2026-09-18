@@ -46,7 +46,10 @@ class PoketPalApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => PalController(palRepository: palRepository)..load(),
+          create: (_) => PalController(
+            palRepository: palRepository,
+            spriteAssetRepository: spriteAssetRepository,
+          )..load(),
         ),
         ChangeNotifierProvider(
           create: (_) => TaskController(

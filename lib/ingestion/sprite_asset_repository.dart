@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'sprite_asset_draft.dart';
 
 // Persistenz-Schnittstelle fuer das Ergebnis der Ingestion-Pipeline (letzter
@@ -12,4 +14,8 @@ abstract class SpriteAssetRepository {
     required SpriteAssetDraft draft,
     required String sourceType,
   });
+
+  // Fuer die Anzeige im Homescreen (PalWidget): die fertigen Sprite-Bytes des
+  // Pals, oder null, wenn noch kein eigenes Pal erstellt wurde.
+  Future<Uint8List?> getSpriteBytesForPal(int palId);
 }

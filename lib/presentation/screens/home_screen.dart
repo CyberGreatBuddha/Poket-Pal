@@ -73,6 +73,7 @@ class HomeScreen extends StatelessWidget {
                         Center(
                           child: PalWidget(
                             isTired: tiredness.isTired,
+                            spriteBytes: palController.spriteBytes,
                             onTap: () => Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (_) => CharacterIngestionScreen(palId: pal.id),

@@ -5,6 +5,7 @@ import '../../domain/pal/pal_repository.dart';
 import '../../domain/pal/pal_state.dart';
 import '../../domain/task_engine/task_response.dart';
 import '../../domain/time_delta/soft_reentry.dart';
+import '../../ingestion/sprite_asset_repository.dart';
 
 // Verbindet Time-Delta Engine und Task-Ergebnisse (ueber PalLifecycleService)
 // mit der UI. Kennt kein ObjectBox -- nur die PalRepository-Schnittstelle,
@@ -12,6 +13,7 @@ import '../../domain/time_delta/soft_reentry.dart';
 class PalController extends ChangeNotifier {
   final PalRepository _palRepository;
   final PalLifecycleService _lifecycleService;
+  final SpriteAssetRepository _spriteAssetRepository;
 
   // Oeffentliche Parameternamen + manuelle Zuweisung statt privater
   // initializing formals: private benannte Parameter liessen sich nur
@@ -19,20 +21,29 @@ class PalController extends ChangeNotifier {
   // Parameternamen), Aufrufer sitzt aber in app.dart.
   PalController({
     required PalRepository palRepository,
+    required SpriteAssetRepository spriteAssetRepository,
     PalLifecycleService lifecycleService = const PalLifecycleService(),
   })  :
         // ignore: prefer_initializing_formals
         _palRepository = palRepository,
+        // ignore: prefer_initializing_formals
+        _spriteAssetRepository = spriteAssetRepository,
         // ignore: prefer_initializing_formals
         _lifecycleService = lifecycleService;
 
   PalState? _pal;
   SoftReEntryPlan? _reEntryPlan;
   bool _isLoading = false;
+  Uint8List? _spriteBytes;
 
   PalState? get pal => _pal;
   SoftReEntryPlan? get reEntryPlan => _reEntryPlan;
   bool get isLoading => _isLoading;
+
+  // Aus der Character Ingestion Pipeline (Kernsystem 3), oder null, solange
+  // das Kind noch kein eigenes Pal fotografiert/erstellt hat -- PalWidget
+  // zeigt dann den Platzhalter.
+  Uint8List? get spriteBytes => _spriteBytes;
 
   // Beim App-Start aufzurufen: laedt das aktive Pal (oder legt eins an, falls
   // noch keins existiert) und wendet die Time-Delta Engine an.
@@ -54,7 +65,19 @@ class PalController extends ChangeNotifier {
       _reEntryPlan = result.reEntryPlan;
     }
 
+    _spriteBytes = await _spriteAssetRepository.getSpriteBytesForPal(_pal!.id);
+
     _isLoading = false;
+    notifyListeners();
+  }
+
+  // Nach einer erfolgreichen Ingestion (CharacterIngestionScreen) aufzurufen,
+  // damit der Homescreen das neue Sprite sofort zeigt, ohne die App neu zu starten.
+  Future<void> reloadSprite() async {
+    final current = _pal;
+    if (current == null) return;
+
+    _spriteBytes = await _spriteAssetRepository.getSpriteBytesForPal(current.id);
     notifyListeners();
   }
 

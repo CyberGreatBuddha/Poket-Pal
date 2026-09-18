@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import '../../ingestion/sprite_asset_draft.dart';
 import '../../ingestion/sprite_asset_repository.dart';
 
@@ -26,5 +28,10 @@ class InMemorySpriteAssetRepository implements SpriteAssetRepository {
     final id = _nextId++;
     _byPalId[palId] = _StoredSpriteAsset(id, palId, draft, sourceType);
     return id;
+  }
+
+  @override
+  Future<Uint8List?> getSpriteBytesForPal(int palId) async {
+    return _byPalId[palId]?.draft.spriteImageBytes;
   }
 }
